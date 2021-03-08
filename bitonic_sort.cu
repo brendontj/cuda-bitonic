@@ -31,17 +31,15 @@ struct Arranger testedExecutions[5] = {
     {512, 32768, 16777216}
 };
 
-//Cuda kernel
+//CUDA kernel
 __global__ 
 void bitonic_sort_kernel(float *deviceArr, int j, int k){
     unsigned int i, ixj;
     i = threadIdx.x + blockDim.x * blockIdx.x;
     ixj = i ^ j;
  
-    //The threads with the lowest ids sort the array
     if ((ixj)>i) {
         if ((i & k)==0) {
-            //Sort ascending order
             if (deviceArr[i]>deviceArr[ixj]) {
                 float tmp = deviceArr[i];
                 deviceArr[i] = deviceArr[ixj];
@@ -49,7 +47,6 @@ void bitonic_sort_kernel(float *deviceArr, int j, int k){
             }
         }
         if ((i & k)!=0) {
-            // Sort descending order
             if (deviceArr[i] < deviceArr[ixj]) {
                 float tmp = deviceArr[i];
                 deviceArr[i] = deviceArr[ixj];
